@@ -1,0 +1,34 @@
+select * from JEUX_has_SUPPORT;
+select * from SUPPORT;
+select * from JEUX;
+
+select j.nom as 'nom du jeu', c.critere, ROUND(AVG(note),2) as 'moyenne', s.name as 'support' from NOTE 
+LEFT JOIN CRITERE c using(idCRITERE) 
+LEFT JOIN JEUX j using(idJEUX) 
+LEFT JOIN SUPPORT s using(idSUPPORT)
+GROUP BY idJEUX, idCRITERE, idSUPPORT ORDER BY j.nom, s.name;
+
+select j.nom as 'nom du jeu',
+GROUP_CONCAT(IF(c.critere='graphisme', note, NULL)) as 'graphisme',
+GROUP_CONCAT(IF(c.critere='lifetime', note, NULL)) as 'lifetime',
+GROUP_CONCAT(IF(c.critere='gameplay', note, NULL)) as 'gameplay',
+s.name as 'support',
+ROUND(AVG(note) ,2) as 'moyenne_total' from NOTE 
+LEFT JOIN CRITERE c using(idCRITERE) 
+LEFT JOIN JEUX j using(idJEUX) 
+LEFT JOIN SUPPORT s using(idSUPPORT)
+GROUP BY idJEUX, idSUPPORT ORDER BY j.nom, s.name ;
+
+select je.idPEGI, je.nom from JEUX je , (select j.nom from select j.nom as 'nomjeu',
+GROUP_CONCAT(IF(c.critere='graphisme', note, NULL)) as 'graphisme',
+GROUP_CONCAT(IF(c.critere='lifetime', note, NULL)) as 'lifetime',
+GROUP_CONCAT(IF(c.critere='gameplay', note, NULL)) as 'gameplay',
+s.name as 'support',
+ROUND(AVG(note) ,2) as 'moyenne_total' from NOTE 
+LEFT JOIN CRITERE c using(idCRITERE) 
+LEFT JOIN JEUX j using(idJEUX) 
+LEFT JOIN SUPPORT s using(idSUPPORT)
+GROUP BY idJEUX, idSUPPORT ORDER BY j.nom, s.name ) as notes where je.nom = notes.nomjeu;
+
+select ROUND(AVG(note),2) from NOTE WHERE idCRITERE=2;
+

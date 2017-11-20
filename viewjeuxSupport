@@ -1,0 +1,13 @@
+CREATE VIEW `jeuxSupport` AS
+    select 
+        j.nom,
+        GROUP_CONCAT(g.support
+            SEPARATOR ', ') as `suppport(s)`
+    from
+        JEUX_has_SUPPORT js
+            LEFT JOIN
+        JEUX j ON j.idJEUX = js.JEUX_idJEUX
+            LEFT JOIN
+        SUPPORT g ON g.idSUPPORT = js.SUPPORT_idSUPPORT
+    GROUP BY j.nom
+    ORDER BY j.nom;

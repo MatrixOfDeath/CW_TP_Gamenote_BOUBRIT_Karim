@@ -1,0 +1,9 @@
+USE `gamenote`;
+DELIMITER $$
+CREATE TRIGGER `NOTE_BUPD` BEFORE UPDATE ON `NOTE` FOR EACH ROW
+begin
+	if(NEW.note<0 OR NEW.note>5) then
+		signal sqlstate '45000'
+			Set message_text = "Valeur de la note incorrecte (entre 0 et 5)";
+	end if;
+end

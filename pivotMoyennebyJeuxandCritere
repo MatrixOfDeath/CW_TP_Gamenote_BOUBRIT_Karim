@@ -1,0 +1,18 @@
+CREATE VIEW `pivotMoyennebyJeuxandCritere` AS
+    SELECT 
+        j.nom as 'nom du jeu',
+        GROUP_CONCAT(IF(c.critere = 'graphisme', note, NULL)) as 'graphisme',
+        GROUP_CONCAT(IF(c.critere = 'lifetime', note, NULL)) as 'lifetime',
+        GROUP_CONCAT(IF(c.critere = 'gameplay', note, NULL)) as 'gameplay',
+        s.name as 'support',
+        ROUND(AVG(note), 2) as 'moyenne_total'
+    from
+        NOTE
+            LEFT JOIN
+        CRITERE c USING (idCRITERE)
+            LEFT JOIN
+        JEUX j USING (idJEUX)
+            LEFT JOIN
+        SUPPORT s USING (idSUPPORT)
+    GROUP BY idJEUX , idSUPPORT
+    ORDER BY j.nom , s.name;

@@ -1,0 +1,13 @@
+CREATE VIEW `jeuxGenre` AS
+    select 
+        j.nom,
+        GROUP_CONCAT(g.genre
+            SEPARATOR ', ') as `genre(s)`
+    from
+        JEUX_has_GENRE jg
+            LEFT JOIN
+        JEUX j ON j.idJEUX = jg.JEUX_idJEUX
+            LEFT JOIN
+        GENRE g ON g.idGENRE = jg.GENRE_idGENRE
+    GROUP BY j.nom
+    ORDER BY j.nom;

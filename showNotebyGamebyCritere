@@ -1,0 +1,16 @@
+CREATE VIEW `showNotebyGamebyCritere` AS
+    select 
+        j.nom as 'nom du jeu',
+        c.critere,
+        ROUND(AVG(note), 2) as 'moyenne',
+        s.name as 'support'
+    from
+        NOTE
+            LEFT JOIN
+        CRITERE c USING (idCRITERE)
+            LEFT JOIN
+        JEUX j USING (idJEUX)
+            LEFT JOIN
+        SUPPORT s USING (idSUPPORT)
+    GROUP BY idJEUX , idCRITERE , idSUPPORT
+    ORDER BY j.nom , s.name;
